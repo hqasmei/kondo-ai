@@ -17,8 +17,8 @@ export default function Home() {
             <Image
               src="/images/logo.svg"
               alt="KondoAI Logo"
-              width={80}
-              height={80}
+              width={120}
+              height={120}
             />
           </div>
 
