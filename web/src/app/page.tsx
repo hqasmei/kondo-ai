@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen font-sans">
-      <div className="bg-gradient-to-b from-[#3F6686] via-[#7FC8F8] to-transparent pb-20 md:pb-40">
+      <div className="bg-gradient-to-b from-[#3F6686] to-transparent pb-20 md:pb-40">
         <header className="p-4 md:p-6 flex flex-col md:flex-row justify-between items-center text-off-white">
           <div className="flex-shrink-0 mb-4 md:mb-0">
             <Image
