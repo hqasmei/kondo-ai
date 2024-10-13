@@ -44,7 +44,7 @@ const HowItWorks = () => {
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Our Features</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
         {HOW_IT_WORKS.map((item, index) => (
           <HowItWorksItem key={index} {...item} index={index} />
         ))}
