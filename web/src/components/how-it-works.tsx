@@ -2,41 +2,52 @@ import React from "react";
 import Image from "next/image";
 import { HOW_IT_WORKS } from "@/constants";
 
-interface Step {
-  title: string;
+interface Feature {
+  headline: string;
   description: string;
-  icon: string;
+  image: string;
 }
 
-const StepItem: React.FC<Step & { number: number }> = ({
-  title,
+const HowItWorksItem: React.FC<Feature & { index: number }> = ({
+  headline,
   description,
-  icon,
-  number,
+  image,
+  index,
 }) => {
+  const isEven = index % 2 === 0;
+
   return (
-    <div className="flex flex-col items-center text-center mb-8 md:mb-0">
-      <div className="bg-sky-blue rounded-full p-4 mb-4">
-        <Image src={icon} alt={title} width={48} height={48} />
+    <div
+      className={`flex flex-col ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } items-center my-16`}
+    >
+      <div className={`w-full md:w-1/2 ${isEven ? "md:pr-8" : "md:pl-8"}`}>
+        <div className="relative w-full max-w-[300px] mx-auto aspect-[9/16]">
+          <Image
+            src={image}
+            alt={headline}
+            fill
+            className="rounded-lg object-contain"
+          />
+        </div>
       </div>
-      <h3 className="text-xl font-bold mb-2">
-        Step {number}: {title}
-      </h3>
-      <p className="text-gray-600">{description}</p>
+      <div className="w-full md:w-1/2 mt-8 md:mt-0">
+        <h3 className="text-2xl font-bold mb-4">{headline}</h3>
+        <p className="text-lg">{description}</p>
+      </div>
     </div>
   );
 };
 
 const HowItWorks = () => {
   return (
-    <section className="py-16 bg-kondo-blue">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {HOW_IT_WORKS.map((step, index) => (
-            <StepItem key={index} {...step} number={index + 1} />
-          ))}
-        </div>
+        <h2 className="text-3xl font-bold text-center mb-12">Our Features</h2>
+        {HOW_IT_WORKS.map((item, index) => (
+          <HowItWorksItem key={index} {...item} index={index} />
+        ))}
       </div>
     </section>
   );

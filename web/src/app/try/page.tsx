@@ -87,17 +87,17 @@ export default function TryPage() {
 
   useEffect(() => {
     console.log("Loading state changed:", isLoading);
-    // You can add more logic here if needed
   }, [isLoading]);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="text-3xl font-bold mb-6">
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-off-white font-comfortaa text-lapis-lazuli">
+      <h1 className="text-4xl font-bold mb-6 text-calm-waters">
         KondoAI✨ - Organization Assistant
       </h1>
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {file ? (
           <div className="mt-4 text-center">
-            <p className="text-sm text-green-500 mb-2">
+            <p className="text-sm text-sky-blue mb-2">
               File selected: {file.name}
             </p>
             <Image
@@ -113,13 +113,13 @@ export default function TryPage() {
             {...getRootProps()}
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
               isDragActive
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-300 hover:border-gray-400"
+                ? "border-sky-blue bg-sky-blue/10"
+                : "border-calm-waters hover:border-sky-blue"
             }`}
           >
             <input {...getInputProps()} />
-            <Upload className="mx-auto h-12 w-12 text-gray-400" />
-            <p className="mt-2 text-sm text-gray-500">
+            <Upload className="mx-auto h-12 w-12 text-calm-waters" />
+            <p className="mt-2 text-sm text-lapis-lazuli">
               {isDragActive
                 ? "Drop the image here..."
                 : "Drag 'n' drop an image here, or click to select a file"}
@@ -130,15 +130,15 @@ export default function TryPage() {
         <button
           type="submit"
           disabled={!file || isLoading}
-          className={`w-full py-2 px-4 rounded flex items-center justify-center transition-colors ${
+          className={`w-full py-2 px-4 rounded-full font-bold transition-colors ${
             file && !isLoading
-              ? "bg-blue-500 text-white hover:bg-blue-600"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-mustard text-lapis-lazuli hover:bg-sky-blue"
+              : "bg-muted text-muted-foreground cursor-not-allowed"
           }`}
         >
           {isLoading ? (
             <>
-              <Loader2 className="animate-spin mr-2" />
+              <Loader2 className="animate-spin mr-2 inline" />
               Analyzing...
             </>
           ) : (
@@ -148,18 +148,20 @@ export default function TryPage() {
       </form>
 
       {error && (
-        <div className="mt-4 text-red-500 text-center bg-red-100 p-3 rounded">
+        <div className="mt-4 text-destructive text-center bg-destructive/10 p-3 rounded-lg">
           {error}
         </div>
       )}
 
       {analysisResult && (
         <div className="mt-6 w-full max-w-4xl bg-white p-6 rounded-lg shadow-md space-y-4">
-          <h2 className="text-xl font-bold text-gray-800">Analysis Results:</h2>
+          <h2 className="text-2xl font-bold text-calm-waters">
+            Analysis Results:
+          </h2>
 
           <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
             <div className="w-full md:w-1/2">
-              <h3 className="font-semibold text-gray-700 mb-2">
+              <h3 className="font-semibold text-lapis-lazuli mb-2">
                 Original Space:
               </h3>
               <Image
@@ -171,7 +173,7 @@ export default function TryPage() {
               />
             </div>
             <div className="w-full md:w-1/2">
-              <h3 className="font-semibold text-gray-700 mb-2">
+              <h3 className="font-semibold text-lapis-lazuli mb-2">
                 Organized Space:
               </h3>
               <Image
@@ -185,15 +187,17 @@ export default function TryPage() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-700">Space Type:</h3>
-            <p className="text-gray-600">{analysisResult.spaceType}</p>
+            <h3 className="font-semibold text-lapis-lazuli">Space Type:</h3>
+            <p className="text-indigo-dye">{analysisResult.spaceType}</p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-700">Items Identified:</h3>
+            <h3 className="font-semibold text-lapis-lazuli">
+              Items Identified:
+            </h3>
             <ul className="list-disc pl-5 space-y-1">
               {analysisResult.originalItems.map((item, index) => (
-                <li key={index} className="text-gray-600">
+                <li key={index} className="text-indigo-dye">
                   {item}
                 </li>
               ))}
@@ -201,10 +205,12 @@ export default function TryPage() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-700">Organization Steps:</h3>
+            <h3 className="font-semibold text-lapis-lazuli">
+              Organization Steps:
+            </h3>
             <ol className="list-decimal pl-5 space-y-2">
               {analysisResult.organizationSteps.map((step, index) => (
-                <li key={index} className="text-gray-600">
+                <li key={index} className="text-indigo-dye">
                   {step.action}
                 </li>
               ))}
@@ -212,10 +218,10 @@ export default function TryPage() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-700">
+            <h3 className="font-semibold text-lapis-lazuli">
               Suggested Arrangement:
             </h3>
-            <p className="text-gray-600">
+            <p className="text-indigo-dye">
               {analysisResult.suggestedArrangement}
             </p>
           </div>
@@ -225,7 +231,7 @@ export default function TryPage() {
       {analysisResult && (
         <button
           onClick={handleRestart}
-          className="mt-6 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+          className="mt-6 py-2 px-4 bg-sky-blue text-white rounded-full hover:bg-calm-waters transition-colors font-bold"
         >
           Analyze Another Image
         </button>
