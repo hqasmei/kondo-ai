@@ -24,6 +24,12 @@ interface AnalysisResult {
   generatedImageUrl: string;
 }
 
+const loadingMessages = [
+  "In the process of bringing you joy...",
+  "Tidying up your space...",
+  "Almost there...",
+];
+
 export default function TryPage() {
   const [file, setFile] = useState<FileWithPreview | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
@@ -31,6 +37,19 @@ export default function TryPage() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setLoadingMessageIndex(
+          (prevIndex) => (prevIndex + 1) % loadingMessages.length
+        );
+      }, 10000); // Change message every 5 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [isLoading]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -58,17 +77,16 @@ export default function TryPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Image = reader.result as string;
-        const base64Data = base64Image.split(",")[1];
-        const result = await analyzeAndOrganizeSpace(base64Data);
-        setAnalysisResult(result);
-      };
-      reader.onerror = () => {
-        setError("Error reading the file. Please try again.");
-      };
-      reader.readAsDataURL(file);
+      const base64Image = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const base64Data = base64Image.split(",")[1];
+      const result = await analyzeAndOrganizeSpace(base64Data);
+      setAnalysisResult(result);
     } catch (error) {
       console.error("Error analyzing and organizing space:", error);
       setError(
@@ -94,58 +112,60 @@ export default function TryPage() {
       <h1 className="text-4xl font-bold mb-6 text-calm-waters">
         KondoAI✨ - Organization Assistant
       </h1>
-      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
-        {file ? (
-          <div className="mt-4 text-center">
-            <p className="text-sm text-sky-blue mb-2">
-              File selected: {file.name}
-            </p>
-            <Image
-              src={file.preview}
-              alt="Preview"
-              width={300}
-              height={300}
-              className="mx-auto max-w-full h-auto object-contain rounded-lg shadow-md"
-            />
-          </div>
-        ) : (
-          <div
-            {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-              isDragActive
-                ? "border-sky-blue bg-sky-blue/10"
-                : "border-calm-waters hover:border-sky-blue"
+      {!analysisResult && !isLoading && (
+        <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
+          {file ? (
+            <div className="mt-4 text-center">
+              <p className="text-sm text-sky-blue mb-2">
+                File selected: {file.name}
+              </p>
+              <Image
+                src={file.preview}
+                alt="Preview"
+                width={300}
+                height={300}
+                className="mx-auto max-w-full h-auto object-contain rounded-lg shadow-md"
+              />
+            </div>
+          ) : (
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+                isDragActive
+                  ? "border-sky-blue bg-sky-blue/10"
+                  : "border-calm-waters hover:border-sky-blue"
+              }`}
+            >
+              <input {...getInputProps()} />
+              <Upload className="mx-auto h-12 w-12 text-calm-waters" />
+              <p className="mt-2 text-sm text-lapis-lazuli">
+                {isDragActive
+                  ? "Drop the image here..."
+                  : "Drag 'n' drop an image here, or click to select a file"}
+              </p>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!file || isLoading}
+            className={`w-full py-2 px-4 rounded-full font-bold transition-colors ${
+              file && !isLoading
+                ? "bg-mustard text-lapis-lazuli hover:bg-sky-blue"
+                : "bg-muted text-muted-foreground cursor-not-allowed"
             }`}
           >
-            <input {...getInputProps()} />
-            <Upload className="mx-auto h-12 w-12 text-calm-waters" />
-            <p className="mt-2 text-sm text-lapis-lazuli">
-              {isDragActive
-                ? "Drop the image here..."
-                : "Drag 'n' drop an image here, or click to select a file"}
-            </p>
-          </div>
-        )}
+            Organize
+          </button>
+        </form>
+      )}
 
-        <button
-          type="submit"
-          disabled={!file || isLoading}
-          className={`w-full py-2 px-4 rounded-full font-bold transition-colors ${
-            file && !isLoading
-              ? "bg-mustard text-lapis-lazuli hover:bg-sky-blue"
-              : "bg-muted text-muted-foreground cursor-not-allowed"
-          }`}
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="animate-spin mr-2 inline" />
-              Analyzing...
-            </>
-          ) : (
-            "Analyze and Organize"
-          )}
-        </button>
-      </form>
+      {isLoading && (
+        <div className="flex flex-col items-center justify-center py-20 gap-4">
+          <Loader2 className="animate-spin mr-2 inline" />
+          {loadingMessages[loadingMessageIndex]}
+        </div>
+      )}
 
       {error && (
         <div className="mt-4 text-destructive text-center bg-destructive/10 p-3 rounded-lg">

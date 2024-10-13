@@ -1,6 +1,7 @@
 import Image from "next/image";
-import ImageComparisonSlider from "@/components/image-comparison-slider";
+
 import { Button } from "@/components/ui/button";
+import Hero from "@/components/hero";
 import Demo from "@/components/demo";
 import HowItWorks from "@/components/how-it-works";
 import Pricing from "@/components/pricing";
@@ -22,8 +23,8 @@ export default function Home() {
           </div>
 
           <nav className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 mb-4 md:mb-0">
-            <a href="#features" className="hover:text-sky-blue">
-              Features
+            <a href="#demo" className="hover:text-sky-blue">
+              Demo
             </a>
             <a href="#how-it-works" className="hover:text-sky-blue">
               How it works
@@ -43,59 +44,15 @@ export default function Home() {
             </Button>
           </div>
         </header>
-
-        <div className="container mx-auto px-4">
-          <section className="flex flex-col md:flex-row items-center justify-between py-12 md:py-20">
-            <div className="w-full md:w-1/2 mb-8 md:mb-0 text-off-white">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
-                Declutter your life with AI
-              </h1>
-              <p className="text-lg sm:text-xl mb-8">
-                Transform your cluttered spaces into organized havens with
-                personalized AI guidance.
-              </p>
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <a
-                  className="bg-[#3F6686] text-off-white px-6 sm:px-8 py-3 rounded-full hover:bg-[#7FC8F8] transition duration-300 text-center text-sm sm:text-base"
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download on App Store
-                </a>
-                <a
-                  className="bg-[#F6C14B] text-[#3F6686] px-6 sm:px-8 py-3 rounded-full hover:bg-[#7FC8F8] hover:text-off-white transition duration-300 text-center text-sm sm:text-base"
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Get it on Google Play
-                </a>
-              </div>
-            </div>
-            <div className="w-full md:w-1/2 relative mt-8 md:mt-0">
-              <div className="absolute top-0 right-0 w-32 h-32 sm:w-56 sm:h-56 bg-[#7FC8F8] rounded-full opacity-20"></div>
-              <ImageComparisonSlider
-                imageUrlBefore="/images/before.png"
-                imageUrlAfter="/images/after.png"
-                altBefore="KondoAI app screenshot - Before"
-                altAfter="KondoAI app screenshot - After"
-              />
-            </div>
-          </section>
-        </div>
+        <Hero />
       </div>
-
       <div id="demo" className="bg-off-white py-12 md:py-20">
         <Demo />
       </div>
-
       <div id="how-it-works" className="bg-lapiz-lazule py-12 md:py-20">
         <HowItWorks />
       </div>
-
       <Pricing />
-
       <Footer />
     </div>
   );
