@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { HOW_IT_WORKS } from "@/constants";
+import ScrollingImage from "./scroll-image";
 
 interface Feature {
   headline: string;
@@ -48,6 +49,23 @@ const HowItWorks = () => {
         {HOW_IT_WORKS.map((item, index) => (
           <HowItWorksItem key={index} {...item} index={index} />
         ))}
+        <div className="flex flex-col md:flex-row-reverse items-center">
+          <div className="w-full md:w-1/2 mb-8 md:mb-0">
+            <div className="max-w-[300px] mx-auto">
+              <div className="relative">
+                <ScrollingImage />
+              </div>
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 md:pr-8">
+            <h2 className="text-3xl font-bold mb-4">Before and After</h2>
+            <p className="text-lg">
+              Visualize your organization journey with our scrolling
+              before-and-after feature. See the dramatic transformations of
+              spaces as you implement our organization tips and tricks.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
